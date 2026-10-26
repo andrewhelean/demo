@@ -10,6 +10,7 @@ fill them in later from the partial output.
 """
 import argparse
 import datetime as dt
+import os
 import re
 import time
 from pathlib import Path
@@ -117,7 +118,7 @@ def main() -> None:
         todo = pd.Series(True, index=df.index)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH"))
         page = browser.new_context(locale="en-US").new_page()
         for i, idx in enumerate(df.index[todo], 1):
             asin = df.at[idx, "ASIN"]
